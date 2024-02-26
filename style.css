@@ -12,6 +12,10 @@ body {
     align-items: center;
 }
 
+.off {
+    display: none;
+}
+
 .title {
     margin: 5px 0;
     color: white;
@@ -77,4 +81,51 @@ p:last-child {
     border: none;
     color: rgb(0, 255, 0);
     font-size: 1.5em;
+}
+
+dialog {
+    outline: none;
+    padding: 0;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border: none;
+    -webkit-box-shadow: 0 0 15px #ffffff;
+    -moz-box-shadow: 0 0 15px #ffffff;
+    box-shadow: 0 0 15px #ffffff;
+}
+
+.x-button {
+    height: 280px;
+    width: 220px;
+    font-size: 2.5em;
+    background-color: rgb(255, 255, 255);
+    border: none;
+    border-top-right-radius: 5px;
+}
+
+.o-button {
+    height: 280px;
+    width: 220px;
+    font-size: 2.5em;
+    background-color: rgb(255, 255, 255);
+    border: none;
+    border-top-left-radius: 5px;
+}
+
+.x-button:hover {
+    background-color: rgb(180, 255, 184);
+    cursor: pointer;
+}
+
+.o-button:hover {
+    background-color: rgb(180, 198, 255);
+    cursor: pointer;
+}
+
+h1 {
+    margin: 10px 0 5px 0;
+    font-size: 1em;
+    text-align: center;
 }
