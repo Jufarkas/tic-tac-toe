@@ -17,7 +17,7 @@
 //     newGame.increase();
 // })();
 
-const mainDoc = document.querySelector('.master-container');
+
 const gridBtn = document.querySelectorAll('.game-button');
 
 (function() {
@@ -25,9 +25,6 @@ const gridBtn = document.querySelectorAll('.game-button');
     let gameInitialize = {
         computerChoice: "",
         playerChoice: "",
-        showGrid: function() {
-            mainDoc.classList.remove('off');
-        },
         getPlayerSelection: function() {
             const body = document.querySelector('body');
             const selectionDialog = document.createElement('dialog');
@@ -46,76 +43,96 @@ const gridBtn = document.querySelectorAll('.game-button');
                 e.preventDefault();
             });
             selectionDialog.addEventListener('click', (e) => {
-                // NEED TO RE-WRITE THIS SO THAT ONE CLICK MAKES: 
-                // playerChoice = "this.value(?)"
-                // if (playerChoice = X) {compChoice = O} || vice versa
                 const target = e.target;
                 if(target === xBtn){
                     this.playerChoice = "X";
                     this.computerChoice = "O";
                     selectionDialog.close();
-                    console.log("player choice is: " + this.playerChoice); //remove once complete
-                    console.log("computer choice is: " + this.computerChoice); //remove once complete
                     gameInitialize.showGrid();
                 } else if (target === oBtn){
                     this.playerChoice = "O";
                     this.computerChoice = "X";
                     selectionDialog.close();
-                    console.log("player choice is: " + this.playerChoice); //remove once complete
-                    console.log("computer choice is: " + this.computerChoice); //remove once complete
                     gameInitialize.showGrid();
                 }
             });
         },
+        showGrid: function() {
+            const mainDoc = document.querySelector('.master-container');
+            mainDoc.classList.remove('off');
+        },
     }
     gameInitialize.getPlayerSelection();
-    console.log(gridArray.length);
-
+    let stopper = 0;
     let playGame = {
+        winnerFound: false,
         clickWatcher: function() {   
             let gameGrid = document.querySelector('.game-grid');
-            gameGrid.addEventListener('click', (e) => { // add event listener to grid container, instead of individual buttons
-                if (e.target.matches('.game-button')) { // checks if the element clicked inside the grid container has the class 'game-button'
-                    let btnClasslist = e.target.classList; // grabs the second class from the buttons, which are numbers for their 'positions'
+            gameGrid.addEventListener('click', (e) => { // listen to grid container, instead of individual buttons
+                if (e.target.matches('.game-button')) { 
+                // checks if elem clicked inside the container has the class 'game-button'
+                    let btnClasslist = e.target.classList; // grabs the second class, which are numbers for their 'positions'
                     let btnPosition = btnClasslist.item(1); // assigns the button position to matching array[#]
-                    if (e.target.textContent === "") {
+                    if (gridArray[btnPosition] === "" && stopper === 0) {
                         e.target.textContent = gameInitialize.playerChoice;
                         gridArray[btnPosition] = gameInitialize.playerChoice;
-                        console.log(gridArray.toString());
-                        setTimeout(playGame.checkWinner, 50);
+                        setTimeout(this.checkWinner, 10);
                     } else {
                         return;
                     }
+                    this.computersTurn();
                 }
             });
         },
+
+        computersTurn: function() {
+            if (this.winnerFound === true) {
+                return;
+            }
+
+            let computerGenerator = Math.floor(Math.random() * 9);
+            let compGridBtn = document.querySelector('.game-grid button:nth-child('+ (computerGenerator +1) +')'); // gets the button for the grid from its class
+            if (gridArray[computerGenerator] != ""){
+                computerGenerator = Math.floor(Math.random() * 9);
+                this.computersTurn();
+            } else if (gridArray[computerGenerator] === ""){
+                compGridBtn.textContent = gameInitialize.computerChoice;
+                gridArray[computerGenerator] = gameInitialize.computerChoice;
+                setTimeout(this.checkWinner, 10);
+                computerGenerator = Math.floor(Math.random() * 9);
+            }
+        },
+
         checkWinner: function() {
+            if (this.winnerFound){
+                return;
+            }
+
             const winningCombinations = [
             [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
             [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
             [0, 4, 8], [2, 4, 6] ];           // Diagonals
-            let pc = gameInitialize.playerChoice;
-            // below checks sub-arrays in 'winningCombinations' against gridArray w/ all values matching player/comp letter (have to do comp piece still)
-            if (winningCombinations.some(subArray => subArray.every(values => gridArray[values] === pc))) {
-                    alert("winner");
-                    console.log(gridArray.toString());
+            
+            let player = gameInitialize.playerChoice;
+            let computer = gameInitialize.computerChoice;
+            // below checks sub-arrays in 'winningCombinations' against gridArray w/ all values matching player/comp letter
+            if(player === ""){
+                return;
+            } else {
+                if (winningCombinations.some(subArray => subArray.every(values => gridArray[values] === player))) {
+                    stopper = 1;
+                    this.winnerFound = true;
+                } else if (winningCombinations.some(subArray => subArray.every(values => gridArray[values] === computer))) {
+                    stopper = 1;
+                    this.winnerFound = true;
+                }
             }
         },
-    }
+    };
+
     playGame.clickWatcher();
     
 })();
-
-
-// make computer choice = random number between 0-8
-
-// if (gameInitialize.gridArray[cmpPosition] != "")
-
-// re-run randomizer and try again? (gotta be a more efficient way)
-
-// else if (gameInitialize.gridArray[cmpPosition] = "")
-
-// assign to grid
 
 
 // X,,,,X,,,,X - top left -> btm right 0, 4, 8
