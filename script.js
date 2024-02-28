@@ -1,23 +1,3 @@
-// (function(){
-//     let newGame = {
-//         score: 0,
-//         greeting: function() {
-//             console.log("hello there");
-//         },
-//         increase: function() {
-//             this.score += 1;
-//             console.log(this.score);
-//         },
-//     }
-//     newGame.greeting();
-//     newGame.increase();
-//     newGame.increase();
-//     newGame.increase();
-//     newGame.increase();
-//     newGame.increase();
-// })();
-
-
 const gridBtn = document.querySelectorAll('.game-button');
 
 (function() {
@@ -95,7 +75,7 @@ const gridBtn = document.querySelectorAll('.game-button');
             if (gridArray.indexOf("") === -1){
                 alert("tie!");
                 return;
-            } else if (gridArray[computerGenerator] != ""){  // need to add an '&& / ||' here to stop from looping if the game ends in a tie
+            } else if (gridArray[computerGenerator] != ""){
                 computerGenerator = Math.floor(Math.random() * 9);
                 setTimeout(playGame.computersTurn, 30);
             } else if (gridArray[computerGenerator] === ""){
@@ -152,15 +132,3 @@ const gridBtn = document.querySelectorAll('.game-button');
     playGame.clickWatcher();
     
 })();
-
-
-// X,,,,X,,,,X - top left -> btm right 0, 4, 8
-// ,,X,,X,,X,, - top right -> btm left 2, 4, 6
-
-// X,X,X,,,,,, - top row horiz 0, 1, 2
-// ,,,X,X,X,,, - mid row horiz 3, 4, 5
-// ,,,,,,X,X,X - btm row horiz 6, 7, 8
-
-// X,,,X,,,X,, - 1st column vert 0, 3, 6
-// ,X,,,X,,,X, - 2nd column vert 1, 4, 7
-// ,,X,,,X,,,X - 3rd column vert 2, 5, 8
