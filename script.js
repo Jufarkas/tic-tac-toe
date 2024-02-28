@@ -23,6 +23,8 @@ const gridBtn = document.querySelectorAll('.game-button');
 (function() {
     let gridArray = ["", "", "", "", "", "", "", "", "",];
     let gameInitialize = {
+        scoreX: 0,
+        scoreO: 0,
         computerChoice: "",
         playerChoice: "",
         getPlayerSelection: function() {
@@ -63,9 +65,8 @@ const gridBtn = document.querySelectorAll('.game-button');
         },
     }
     gameInitialize.getPlayerSelection();
-    let stopper = 0;
+    let winnerFound = false;
     let playGame = {
-        winnerFound: false,
         clickWatcher: function() {   
             let gameGrid = document.querySelector('.game-grid');
             gameGrid.addEventListener('click', (e) => { // listen to grid container, instead of individual buttons
@@ -73,38 +74,42 @@ const gridBtn = document.querySelectorAll('.game-button');
                 // checks if elem clicked inside the container has the class 'game-button'
                     let btnClasslist = e.target.classList; // grabs the second class, which are numbers for their 'positions'
                     let btnPosition = btnClasslist.item(1); // assigns the button position to matching array[#]
-                    if (gridArray[btnPosition] === "" && stopper === 0) {
+                    if (gridArray[btnPosition] === "" && winnerFound === false) {
                         e.target.textContent = gameInitialize.playerChoice;
                         gridArray[btnPosition] = gameInitialize.playerChoice;
-                        setTimeout(this.checkWinner, 10);
+                        setTimeout(playGame.checkWinner, 20);
                     } else {
                         return;
                     }
-                    this.computersTurn();
+                    setTimeout(playGame.computersTurn, 30);
                 }
             });
         },
 
         computersTurn: function() {
-            if (this.winnerFound === true) {
+            if (winnerFound === true) {
                 return;
             }
-
             let computerGenerator = Math.floor(Math.random() * 9);
             let compGridBtn = document.querySelector('.game-grid button:nth-child('+ (computerGenerator +1) +')'); // gets the button for the grid from its class
-            if (gridArray[computerGenerator] != ""){
+            if (gridArray.indexOf("") === -1){
+                alert("tie!");
+                return;
+            } else if (gridArray[computerGenerator] != ""){  // need to add an '&& / ||' here to stop from looping if the game ends in a tie
                 computerGenerator = Math.floor(Math.random() * 9);
-                this.computersTurn();
+                setTimeout(playGame.computersTurn, 30);
             } else if (gridArray[computerGenerator] === ""){
                 compGridBtn.textContent = gameInitialize.computerChoice;
                 gridArray[computerGenerator] = gameInitialize.computerChoice;
-                setTimeout(this.checkWinner, 10);
+                setTimeout(playGame.checkWinner, 20);
                 computerGenerator = Math.floor(Math.random() * 9);
+            } else {
+                return;
             }
         },
 
         checkWinner: function() {
-            if (this.winnerFound){
+            if (winnerFound === true){
                 return;
             }
 
@@ -112,22 +117,36 @@ const gridBtn = document.querySelectorAll('.game-button');
             [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
             [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
             [0, 4, 8], [2, 4, 6] ];           // Diagonals
-            
+
             let player = gameInitialize.playerChoice;
             let computer = gameInitialize.computerChoice;
             // below checks sub-arrays in 'winningCombinations' against gridArray w/ all values matching player/comp letter
             if(player === ""){
                 return;
             } else {
+                let winner;
                 if (winningCombinations.some(subArray => subArray.every(values => gridArray[values] === player))) {
-                    stopper = 1;
-                    this.winnerFound = true;
+                    winnerFound = true;
+                    winner = player;
                 } else if (winningCombinations.some(subArray => subArray.every(values => gridArray[values] === computer))) {
-                    stopper = 1;
-                    this.winnerFound = true;
+                    winnerFound = true;
+                    winner = computer;
                 }
+                playGame.increaseScore(winner);
             }
         },
+
+        increaseScore: function(winner) {
+            if(winner === "X"){
+                gameInitialize.scoreX++;
+                console.log(gameInitialize.scoreX);
+                document.querySelector('.x-score').textContent = gameInitialize.scoreX;
+            } else if (winner === "O") {
+                gameInitialize.scoreO++;
+                console.log(gameInitialize.scoreO);
+                document.querySelector('.o-score').textContent = gameInitialize.scoreO;
+            }
+        }
     };
 
     playGame.clickWatcher();
