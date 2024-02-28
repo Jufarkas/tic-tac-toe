@@ -25,11 +25,9 @@ const gridBtn = document.querySelectorAll('.game-button');
     let gameInitialize = {
         computerChoice: "",
         playerChoice: "",
-
         showGrid: function() {
             mainDoc.classList.remove('off');
         },
-
         getPlayerSelection: function() {
             const body = document.querySelector('body');
             const selectionDialog = document.createElement('dialog');
@@ -97,7 +95,7 @@ const gridBtn = document.querySelectorAll('.game-button');
             [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
             [0, 4, 8], [2, 4, 6] ];           // Diagonals
             let pc = gameInitialize.playerChoice;
-            // below checks sub-arrays in 'winningCombomatopms' against gridArray w/ all values matching player/comp letter (have to do comp piece still)
+            // below checks sub-arrays in 'winningCombinations' against gridArray w/ all values matching player/comp letter (have to do comp piece still)
             if (winningCombinations.some(subArray => subArray.every(values => gridArray[values] === pc))) {
                     alert("winner");
                     console.log(gridArray.toString());
