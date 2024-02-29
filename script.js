@@ -55,6 +55,7 @@ const gridBtn = document.querySelectorAll('.game-button');
                     let btnClasslist = e.target.classList; // grabs the second class, which are numbers for their 'positions'
                     let btnPosition = btnClasslist.item(1); // assigns the button position to matching array[#]
                     if (gridArray[btnPosition] === "" && winnerFound === false) {
+                        e.target.style.color = "rgb(0, 81, 255)";
                         e.target.textContent = gameInitialize.playerChoice;
                         gridArray[btnPosition] = gameInitialize.playerChoice;
                         setTimeout(playGame.checkWinner, 20);
