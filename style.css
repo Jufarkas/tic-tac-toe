@@ -36,19 +36,33 @@ sub {
 }
 
 .game-button {
-    font-size: 140px;
-    border: none;
-    background-color: rgb(235, 235, 235);
-    color: rgb(0, 2, 92);
-    cursor: pointer;
+    outline: none;
+    display: block;
+    box-sizing: border-box;
+    font-size: 120px;
+    --button_radius: 25px;
+    --button_color: #e8e8e8;
+    font-weight: 700;
+    border-radius: var(--button_radius);
+    background: var(--button_color);
+    color: rgb(0, 81, 255);
+    transform: translateY(-3px);
+    transition: transform 0.1s ease;
 }
 
 .game-button:hover {
-    background-color: rgb(230, 249, 255);
+    border: none;
+    outline: none;
+    -webkit-box-shadow: 0 0 10px #ffffff;
+    -moz-box-shadow: 0 0 10px #ffffff;
+    box-shadow: 0 0 10px #ffffff;
+    cursor: pointer;
+    transform: translateY(-3px);
 }
-
+  
 .game-button:active {
-    background-color: rgb(220, 255, 224);
+    outline: none;
+    transform: translateY(0);
 }
 
 .game-score {
@@ -73,13 +87,9 @@ sub {
     align-items: center;
 }
 
-/* .score p {
-    border-bottom: 2px solid white;
-} */
-
 p:last-child {
     border: none;
-    color: rgb(0, 255, 0);
+    color: rgb(0, 255, 242);
     font-size: 1.5em;
 }
 
@@ -99,7 +109,8 @@ dialog {
 .x-button {
     height: 280px;
     width: 220px;
-    font-size: 2.5em;
+    font-size: 120px;
+    font-weight: 600;
     background-color: rgb(255, 255, 255);
     border: none;
     border-top-right-radius: 5px;
@@ -108,7 +119,8 @@ dialog {
 .o-button {
     height: 280px;
     width: 220px;
-    font-size: 2.5em;
+    font-size: 120px;
+    font-weight: 600;
     background-color: rgb(255, 255, 255);
     border: none;
     border-top-left-radius: 5px;
