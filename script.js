@@ -94,8 +94,10 @@ const gridBtn = document.querySelectorAll('.game-button');
                 computerGenerator = Math.floor(Math.random() * 9);
                 setTimeout(playGame.computersTurn, 30);
             } else if (gridArray[computerGenerator] === ""){
+                compGridBtn.style.color = "red";
                 compGridBtn.textContent = gameInitialize.computerChoice;
                 gridArray[computerGenerator] = gameInitialize.computerChoice;
+
                 setTimeout(playGame.checkWinner, 20);
                 computerGenerator = Math.floor(Math.random() * 9);
             } else {
