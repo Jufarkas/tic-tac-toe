@@ -47,7 +47,7 @@ const gridBtn = document.querySelectorAll('.game-button');
     gameInitialize.getPlayerSelection();
     let winnerFound = false;
     let playGame = {
-        clickWatcher: function() {   
+        clickWatcher: function() {
             let gameGrid = document.querySelector('.game-grid');
             gameGrid.addEventListener('click', (e) => { // listen to grid container, instead of individual buttons
                 if (e.target.matches('.game-button')) { 
@@ -66,6 +66,17 @@ const gridBtn = document.querySelectorAll('.game-button');
             });
         },
 
+        tieCheck: function(){
+            if (gridArray.indexOf("") === -1){
+                gridArray = ["", "", "", "", "", "", "", "", "",];
+                gridBtn.forEach((button) => {
+                    button.textContent = "";
+                });
+                // ADD THING TO DO WHEN THE GAME ENDS IN A TIE
+                return;
+            }
+        },
+
         computersTurn: function() {
             if (winnerFound === true) {
                 return;
@@ -73,7 +84,11 @@ const gridBtn = document.querySelectorAll('.game-button');
             let computerGenerator = Math.floor(Math.random() * 9);
             let compGridBtn = document.querySelector('.game-grid button:nth-child('+ (computerGenerator +1) +')'); // gets the button for the grid from its class
             if (gridArray.indexOf("") === -1){
-                alert("tie!");
+                gridArray = ["", "", "", "", "", "", "", "", "",];
+                gridBtn.forEach((button) => {
+                    button.textContent = "";
+                });
+                // ADD THING TO DO WHEN THE GAME ENDS IN A TIE
                 return;
             } else if (gridArray[computerGenerator] != ""){
                 computerGenerator = Math.floor(Math.random() * 9);
@@ -86,6 +101,7 @@ const gridBtn = document.querySelectorAll('.game-button');
             } else {
                 return;
             }
+            setTimeout(playGame.tieCheck, 20);
         },
 
         checkWinner: function() {
@@ -108,9 +124,11 @@ const gridBtn = document.querySelectorAll('.game-button');
                 if (winningCombinations.some(subArray => subArray.every(values => gridArray[values] === player))) {
                     winnerFound = true;
                     winner = player;
+                    // ADD DIALOG SAYING WHO WON, AND TO CONTINUE
                 } else if (winningCombinations.some(subArray => subArray.every(values => gridArray[values] === computer))) {
                     winnerFound = true;
                     winner = computer;
+                    // ADD DIALOG SAYING WHO WON, AND TO CONTINUE
                 }
                 playGame.increaseScore(winner);
             }
@@ -119,12 +137,40 @@ const gridBtn = document.querySelectorAll('.game-button');
         increaseScore: function(winner) {
             if(winner === "X"){
                 gameInitialize.scoreX++;
-                console.log(gameInitialize.scoreX);
                 document.querySelector('.x-score').textContent = gameInitialize.scoreX;
+                if(gameInitialize.scoreX === 5){
+                    if(gameInitialize.playerChoice === "X"){
+                        alert("player wins");
+                        // ADD BUTTON/DIALOG TO RESET GAME
+                    } else {
+                        alert("computer wins");
+                        // ADD BUTTON/DIALOG TO RESET GAME
+                    }
+                } else {
+                    gridArray = ["", "", "", "", "", "", "", "", "",];
+                    gridBtn.forEach((button) => {
+                        button.textContent = "";
+                    });
+                    winnerFound = false;
+                }
             } else if (winner === "O") {
                 gameInitialize.scoreO++;
-                console.log(gameInitialize.scoreO);
                 document.querySelector('.o-score').textContent = gameInitialize.scoreO;
+                if(gameInitialize.scoreO === 5){
+                    if(gameInitialize.playerChoice === "O"){
+                        alert("player wins");
+                        // ADD BUTTON/DIALOG TO RESET GAME
+                    } else {
+                        alert("computer wins");
+                        // ADD BUTTON/DIALOG TO RESET GAME
+                    }
+                } else {
+                    gridArray = ["", "", "", "", "", "", "", "", "",];
+                    gridBtn.forEach((button) => {
+                        button.textContent = "";
+                    });
+                    winnerFound = false;
+                }
             }
         }
     };
