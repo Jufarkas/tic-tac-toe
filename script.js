@@ -13,7 +13,7 @@ const gridBtn = document.querySelectorAll('.game-button');
             const xBtn = document.createElement('button');
             const oBtn = document.createElement('button');
             const introText = document.createElement('h1');
-            introText.textContent = "Select your champion:";
+            introText.textContent = "Select your fighter:";
             xBtn.textContent = "X";
             oBtn.textContent = "O";
             body.appendChild(selectionDialog);
