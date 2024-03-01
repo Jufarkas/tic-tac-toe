@@ -29,44 +29,42 @@ sub {
 }
 
 .game-grid {
+    margin-top: 40px;
+    margin-bottom: 10px;
     display: grid;
+    align-items: center;
+    justify-items: center;
     grid-template: repeat(3, 1fr) / repeat(3, 1fr);
-    width: 560px;
-    height: 560px;
-    gap: 10px;
+    font-family: "Rubik", Arial, Helvetica, sans-serif;
+    width: 440px;
+    height: 440px;
 }
 
 .game-button {
-    width: 180px;
-    height: 180px;
-    font-family: "Permanent Marker", Arial, Helvetica, sans-serif;
-    outline: none;
-    display: block;
-    box-sizing: border-box;
+    border: none;
+    width: 142px;
+    height: 142px;
+    font-family: "Rubik", Arial, Helvetica, sans-serif;
     font-size: 2.7em;
-    --button_radius: 25px;
     --button_color: #e8e8e8;
     font-weight: 700;
-    border-radius: var(--button_radius);
     background: var(--button_color);
     color: rgb(0, 81, 255);
-    transform: translateY(-3px);
     transition: transform 0.1s ease;
 }
 
 .game-button:hover {
     border: none;
     outline: none;
-    -webkit-box-shadow: 0 0 10px #ffffff;
-    -moz-box-shadow: 0 0 10px #ffffff;
-    box-shadow: 0 0 10px #ffffff;
     cursor: pointer;
-    transform: translateY(-3px);
+    /* transform: translateY(-1px); */
+    background-color: rgb(220, 245, 253);
 }
   
 .game-button:active {
     outline: none;
-    transform: translateY(0);
+    background-color: rgb(190, 225, 245);
+    transform: translateY(1px);
 }
 
 .game-score {
@@ -98,6 +96,7 @@ p:last-child {
 }
 
 dialog {
+    font-size: 1.2em;
     outline: none;
     padding: 0;
     border-top-left-radius: 15px;
@@ -119,6 +118,7 @@ dialog {
     background-color: rgb(255, 255, 255);
     border: none;
     border-top-right-radius: 5px;
+    text-shadow: 0 4px 4px rgb(0, 119, 255);
 }
 
 .o-button {
@@ -130,15 +130,18 @@ dialog {
     background-color: rgb(255, 255, 255);
     border: none;
     border-top-left-radius: 5px;
+    text-shadow: 0 4px 4px rgb(0, 119, 255);
 }
 
 .x-button:hover {
-    background-color: rgb(180, 255, 184);
+    text-shadow: 0 6px 5px black;
+    color: rgb(0, 119, 255);
     cursor: pointer;
 }
 
 .o-button:hover {
-    background-color: rgb(180, 198, 255);
+    text-shadow: 0 6px 5px black;
+    color: rgb(0, 119, 255);
     cursor: pointer;
 }
 
@@ -146,4 +149,115 @@ h1 {
     margin: 10px 5px;
     font-size: .7em;
     text-align: center;
+}
+
+
+.continue-dialog {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1.2em;
+    outline: none;
+    padding: 0;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    height: 496px;
+    border: 2px solid rgb(0, 255, 0);
+    width: 434px;
+    background: transparent;
+    margin-top: 80px;
+    color: white;
+    -webkit-box-shadow: 0 0 15px #9aff9f;
+    -moz-box-shadow: 0 0 15px #9aff9f;
+    box-shadow: 0 0 15px #9aff9f;
+}
+
+.continue-dialog h1 {
+    color: #3bff29;
+}
+
+.continue-button {
+    font-size: .3em;
+    display: flex;
+    width: 140px;
+    height: 90px;
+    justify-content: center;
+    align-items: center;
+    background: #f3fff78a;
+    margin-top: 170px;
+    margin-right: 1px;
+    transition: all .1s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+
+.continue-button:hover {
+    cursor: pointer;
+  background-color: #3bff29;
+  box-shadow: #005a38 0 -6px 8px inset;
+  transform: scale(1.125);
+}
+
+.continue-button:active {
+  transform: scale(1.025);
+  outline: none;
+}
+
+.restart-dialog {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1.2em;
+    outline: none;
+    padding: 0;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    height: 496px;
+    border: 2px solid rgb(255, 0, 0);
+    width: 434px;
+    background: transparent;
+    margin-top: 80px;
+    color: white;
+    -webkit-box-shadow: 0 0 15px #ff9a9a;
+    -moz-box-shadow: 0 0 15px #ff9a9a;
+    box-shadow: 0 0 15px #ff9a9a;
+}
+
+.restart-dialog h1 {
+    color: #ff2929;
+}
+
+.restart-button {
+    font-size: .3em;
+    display: flex;
+    width: 140px;
+    height: 90px;
+    justify-content: center;
+    align-items: center;
+    background: #f3fff78a;
+    margin-top: 170px;
+    margin-right: 1px;
+    transition: all .1s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+
+.restart-button:hover {
+    cursor: pointer;
+    background-color: #ff2929;
+    box-shadow: #5a0000 0 -6px 8px inset;
+    transform: scale(1.125);
+}
+
+.restart-button:active {
+    transform: scale(1.025);
+    outline: none;
 }
