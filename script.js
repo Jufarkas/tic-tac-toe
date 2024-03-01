@@ -7,7 +7,7 @@ const gridBtn = document.querySelectorAll('.game-button');
         scoreO: 0,
         computerChoice: "",
         playerChoice: "",
-        getPlayerSelection: function() {
+        playerSelectionDialog: function() {
             const body = document.querySelector('body');
             const selectionDialog = document.createElement('dialog');
             const xBtn = document.createElement('button');
@@ -44,13 +44,13 @@ const gridBtn = document.querySelectorAll('.game-button');
             mainDoc.classList.remove('off');
         },
     }
-    gameInitialize.getPlayerSelection();
+    gameInitialize.playerSelectionDialog();
     
     let winnerFound = false;
     let roundEndCheck = 0;
+    const gameGrid = document.querySelector('.game-grid');
     let playGame = {
         playersTurn: function() {
-            let gameGrid = document.querySelector('.game-grid');
             gameGrid.addEventListener('click', (e) => { // listen to grid container, instead of individual buttons
                 if (e.target.matches('.game-button')) { 
                 // checks if elem clicked inside the container has the class 'game-button'
@@ -85,6 +85,7 @@ const gridBtn = document.querySelectorAll('.game-button');
                 gridBtn.forEach((button) => {
                     button.textContent = "";
                 });
+                alert("TIE!");
                 return;
                 // ADD THING TO DO WHEN THE GAME ENDS IN A TIE
             };
@@ -113,7 +114,7 @@ const gridBtn = document.querySelectorAll('.game-button');
                 gridBtn.forEach((button) => {
                     button.textContent = "";
                 });
-                // ADD THING TO DO WHEN THE GAME ENDS IN A TIE
+                alert("TIE!");
                 return;
             }
         },
@@ -139,11 +140,9 @@ const gridBtn = document.querySelectorAll('.game-button');
                     winnerFound = true;
                     winner = player;
                     roundEndCheck = 1;
-                    // ADD DIALOG SAYING WHO WON, AND TO CONTINUE
                 } else if (winningCombinations.some(subArray => subArray.every(values => gridArray[values] === computer))) {
                     winnerFound = true;
                     winner = computer;
-                    // ADD DIALOG SAYING WHO WON, AND TO CONTINUE
                 };
                 playGame.increaseScore(winner);
             };
@@ -156,14 +155,12 @@ const gridBtn = document.querySelectorAll('.game-button');
                 setTimeout(() => {
                     if(gameInitialize.scoreX === 5){
                         if(gameInitialize.playerChoice === "X"){
-                            alert("player wins");
-                            // ADD BUTTON/DIALOG TO RESET GAME
+                            playGame.roundOver(winner);
                         } else {
-                            alert("computer wins");
-                            // ADD BUTTON/DIALOG TO RESET GAME
+                            playGame.roundOver(winner);
                         }
                     } else {
-                        playGame.roundOver();
+                        playGame.roundOver(winner);
                     }
                 }, 20)
             } else if (winner === "O") {
@@ -172,28 +169,74 @@ const gridBtn = document.querySelectorAll('.game-button');
                 setTimeout(() => {
                     if(gameInitialize.scoreO === 5){
                         if(gameInitialize.playerChoice === "O"){
-                            alert("player wins");
-                            // ADD BUTTON/DIALOG TO RESET GAME
+                            playGame.roundOver(winner);
                         } else {
-                            alert("computer wins");
-                            // ADD BUTTON/DIALOG TO RESET GAME
+                            playGame.roundOver(winner);
                         }
                     } else {
-                        playGame.roundOver();
+                        playGame.roundOver(winner);
                     }
                 }, 20)
             }
-
         },
 
-        roundOver: function() {
-            setTimeout(() => {
-                // alert("woohoo");
-                playGame.resetRound();
-            }, 20);
+        roundOver: function(winner) {
+            const body = document.querySelector('body');
+            const continueDialog = document.createElement('dialog');
+            continueDialog.classList.add('continue-dialog');
+            const continueBtn = document.createElement('button');
+            continueBtn.classList.add('continue-button');
+            const winnerHeader = document.createElement('h1');
+            if (gameInitialize.scoreX === 5 || gameInitialize.scoreO === 5){
+                continueDialog.classList.add('restart-dialog');
+                continueBtn.classList.add('restart-button');
+                winnerHeader.textContent = "Player " + winner + " wins it all!";
+                continueBtn.textContent = "RESTART?";
+                body.appendChild(continueDialog);
+                continueDialog.showModal();
+                continueDialog.appendChild(winnerHeader);
+                continueDialog.appendChild(continueBtn).classList.add('continue-button');
+                continueDialog.addEventListener('cancel', (e) => {
+                    e.preventDefault();
+                });
+                continueDialog.addEventListener('click', (e) => {
+                    const target = e.target;
+                    if(target === continueBtn){
+                        continueDialog.close();
+                        playGame.roundReset();
+                        gameInitialize.scoreX = 0;
+                        document.querySelector('.x-score').textContent = gameInitialize.scoreX;
+                        gameInitialize.scoreO = 0;
+                        document.querySelector('.o-score').textContent = gameInitialize.scoreO;
+                        body.removeChild(continueDialog);
+                    } else {
+                        return;
+                    }
+                });
+            } else {
+                winnerHeader.textContent = "Player " + winner + " wins!";
+                continueBtn.textContent = "AGAIN!";
+                body.appendChild(continueDialog);
+                continueDialog.showModal();
+                continueDialog.appendChild(winnerHeader);
+                continueDialog.appendChild(continueBtn).classList.add('continue-button');
+                continueDialog.addEventListener('cancel', (e) => {
+                    e.preventDefault();
+                });
+                continueDialog.addEventListener('click', (e) => {
+                    const target = e.target;
+                    if(target === continueBtn){
+                        continueDialog.close();
+                        playGame.roundReset();
+                        body.removeChild(continueDialog);
+                    } else {
+                        return;
+                    }
+                });
+            }
         },
 
-        resetRound: function() {
+        roundReset: function() {
             gridArray = ["", "", "", "", "", "", "", "", "",];
             gridBtn.forEach((button) => {
                 button.textContent = "";
