@@ -183,19 +183,16 @@ const gridBtn = document.querySelectorAll('.game-button');
         roundOver: function(winner) {
             const body = document.querySelector('body');
             const continueDialog = document.createElement('dialog');
-            continueDialog.classList.add('continue-dialog');
             const continueBtn = document.createElement('button');
-            continueBtn.classList.add('continue-button');
             const winnerHeader = document.createElement('h1');
             if (gameInitialize.scoreX === 5 || gameInitialize.scoreO === 5){
                 continueDialog.classList.add('restart-dialog');
-                continueBtn.classList.add('restart-button');
                 winnerHeader.textContent = "Player " + winner + " wins it all!";
                 continueBtn.textContent = "RESTART?";
                 body.appendChild(continueDialog);
                 continueDialog.showModal();
                 continueDialog.appendChild(winnerHeader);
-                continueDialog.appendChild(continueBtn).classList.add('continue-button');
+                continueDialog.appendChild(continueBtn).classList.add('restart-button');
                 continueDialog.addEventListener('cancel', (e) => {
                     e.preventDefault();
                 });
@@ -214,6 +211,8 @@ const gridBtn = document.querySelectorAll('.game-button');
                     }
                 });
             } else {
+                continueBtn.classList.add('continue-button');
+                continueDialog.classList.add('continue-dialog');
                 winnerHeader.textContent = "Player " + winner + " wins!";
                 continueBtn.textContent = "AGAIN!";
                 body.appendChild(continueDialog);
