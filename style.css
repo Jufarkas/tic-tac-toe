@@ -112,7 +112,7 @@ dialog {
 .x-button {
     font-family: "Rubik", sans-serif;
     height: 280px;
-    width: 220px;
+    width: 195px;
     font-size: 2.5em;
     font-weight: 600;
     background-color: rgb(255, 255, 255);
@@ -124,7 +124,7 @@ dialog {
 .o-button {
     font-family: "Rubik", sans-serif;
     height: 280px;
-    width: 220px;
+    width: 195px;
     font-size: 2.5em;
     font-weight: 600;
     background-color: rgb(255, 255, 255);
@@ -165,7 +165,7 @@ h1 {
     border-bottom-right-radius: 5px;
     height: 496px;
     border: 2px solid rgb(0, 255, 0);
-    width: 434px;
+    min-width: 434px;
     background: transparent;
     margin-top: 80px;
     color: white;
@@ -197,14 +197,14 @@ h1 {
 
 .continue-button:hover {
     cursor: pointer;
-  background-color: #3bff29;
-  box-shadow: #005a38 0 -6px 8px inset;
-  transform: scale(1.125);
+    background-color: #3bff29;
+    box-shadow: #005a38 0 -6px 8px inset;
+    transform: scale(1.125);
 }
 
 .continue-button:active {
-  transform: scale(1.025);
-  outline: none;
+    transform: scale(1.025);
+    outline: none;
 }
 
 .restart-dialog {
@@ -220,7 +220,7 @@ h1 {
     border-bottom-right-radius: 5px;
     height: 496px;
     border: 2px solid rgb(255, 0, 0);
-    width: 434px;
+    min-width: 434px;
     background: transparent;
     margin-top: 80px;
     color: white;
