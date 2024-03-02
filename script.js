@@ -84,7 +84,7 @@ const gridBtn = document.querySelectorAll('.game-button');
                 gridBtn.forEach((button) => {
                     button.textContent = "";
                 });
-                alert("oopsies!");
+                alert("TIE!");
                 return;
             };
 
