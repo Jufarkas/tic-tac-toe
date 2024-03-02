@@ -107,7 +107,7 @@ const gridBtn = document.querySelectorAll('.game-button');
         },
 
         computersTurnOnLoss: function(winner) {
-            if(winner === playGame.playerChoice){
+            if(winner === gameInitialize.playerChoice){
                 setTimeout(playGame.computersTurn, 100);
             }
         },
@@ -198,7 +198,7 @@ const gridBtn = document.querySelectorAll('.game-button');
                     continueDialog.close();
                     playGame.roundReset();
                     body.removeChild(continueDialog);
-                    playGame.computersTurnOnLoss();
+                    playGame.computersTurnOnLoss(winner);
 
                     if(dialogClass === 'restart'){
                         gameInitialize.scoreO = 0;
@@ -206,7 +206,7 @@ const gridBtn = document.querySelectorAll('.game-button');
                         document.querySelector('.x-score').textContent = gameInitialize.scoreX;
                         document.querySelector('.o-score').textContent = gameInitialize.scoreO;
                         body.removeChild(continueDialog);
-                        playGame.computersTurnOnLoss();
+                        playGame.computersTurnOnLoss(winner);
                     }
 
                 } else {
