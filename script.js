@@ -78,16 +78,14 @@ const gridBtn = document.querySelectorAll('.game-button');
             if (winnerFound === true) {
                 return;
             } else if (gridArray == ["", "", "", "", "", "", "", "", "",]){
-                console.log(gridArray);
                 return;
             } else if (gridArray.indexOf("") === -1){
                 gridArray = ["", "", "", "", "", "", "", "", "",];
                 gridBtn.forEach((button) => {
                     button.textContent = "";
                 });
-                alert("TIE!");
+                alert("oopsies!");
                 return;
-                // ADD THING TO DO WHEN THE GAME ENDS IN A TIE
             };
 
             let computerGenerator = Math.floor(Math.random() * 9);
@@ -105,7 +103,13 @@ const gridBtn = document.querySelectorAll('.game-button');
             } else {
                 return;
             }
-            playGame.tieCheck();
+            setTimeout(playGame.tieCheck, 20);
+        },
+
+        computersTurnOnLoss: function(winner) {
+            if(winner === playGame.playerChoice){
+                setTimeout(playGame.computersTurn, 100);
+            }
         },
 
         tieCheck: function(){
@@ -140,99 +144,75 @@ const gridBtn = document.querySelectorAll('.game-button');
                     winnerFound = true;
                     winner = player;
                     roundEndCheck = 1;
+                    playGame.increaseScore(winner);
                 } else if (winningCombinations.some(subArray => subArray.every(values => gridArray[values] === computer))) {
                     winnerFound = true;
                     winner = computer;
+                    playGame.increaseScore(winner);
                 };
-                playGame.increaseScore(winner);
             };
         },
 
         increaseScore: function(winner) {
-            if(winner === "X"){
-                gameInitialize.scoreX++;
-                document.querySelector('.x-score').textContent = gameInitialize.scoreX;
-                setTimeout(() => {
-                    if(gameInitialize.scoreX === 5){
-                        if(gameInitialize.playerChoice === "X"){
-                            playGame.roundOver(winner);
-                        } else {
-                            playGame.roundOver(winner);
-                        }
+            // add ternary operator to avoid repetition
+            let scoreToUpdate = (winner === "X") ? 'x-score' : 'o-score';
+            gameInitialize['score' + winner]++;
+            document.querySelector('.' + scoreToUpdate).textContent = gameInitialize['score' + winner];
+            setTimeout(() => {
+                if(gameInitialize['score' + winner] === 5){
+                    if(gameInitialize.playerChoice === winner){
+                        playGame.roundOver(winner);
                     } else {
                         playGame.roundOver(winner);
                     }
-                }, 20)
-            } else if (winner === "O") {
-                gameInitialize.scoreO++;
-                document.querySelector('.o-score').textContent = gameInitialize.scoreO;
-                setTimeout(() => {
-                    if(gameInitialize.scoreO === 5){
-                        if(gameInitialize.playerChoice === "O"){
-                            playGame.roundOver(winner);
-                        } else {
-                            playGame.roundOver(winner);
-                        }
-                    } else {
-                        playGame.roundOver(winner);
-                    }
-                }, 20)
-            }
+                } else {
+                    playGame.roundOver(winner);
+                }
+            }, 20)
         },
 
         roundOver: function(winner) {
+            // add ternary operators to avoid repetition
+            const dialogClass = (gameInitialize.scoreX === 5 || gameInitialize.scoreO === 5) ? 'restart' : 'continue';
             const body = document.querySelector('body');
             const continueDialog = document.createElement('dialog');
             const continueBtn = document.createElement('button');
+            continueBtn.textContent = (dialogClass === 'restart' ? "RESTART" : "AGAIN!");
             const winnerHeader = document.createElement('h1');
-            if (gameInitialize.scoreX === 5 || gameInitialize.scoreO === 5){
-                continueDialog.classList.add('restart-dialog');
-                winnerHeader.textContent = "Player " + winner + " wins it all!";
-                continueBtn.textContent = "RESTART?";
-                body.appendChild(continueDialog);
-                continueDialog.showModal();
-                continueDialog.appendChild(winnerHeader);
-                continueDialog.appendChild(continueBtn).classList.add('restart-button');
-                continueDialog.addEventListener('cancel', (e) => {
-                    e.preventDefault();
-                });
-                continueDialog.addEventListener('click', (e) => {
-                    const target = e.target;
-                    if(target === continueBtn){
-                        continueDialog.close();
-                        playGame.roundReset();
+            winnerHeader.textContent = "Player " + winner + (dialogClass === 'restart' ? " wins it all!" : "wins!");
+            
+            continueDialog.classList.add(dialogClass + '-dialog');
+            continueBtn.classList.add(dialogClass + '-button');
+            body.appendChild(continueDialog);
+            continueDialog.showModal();
+            continueDialog.appendChild(winnerHeader);
+            continueDialog.appendChild(continueBtn);
+                
+            continueDialog.addEventListener('cancel', (e) => {
+                e.preventDefault();
+            });
+
+            continueDialog.addEventListener('click', (e) => {
+                const target = e.target;
+                if(target === continueBtn){
+                    continueDialog.close();
+                    playGame.roundReset();
+                    body.removeChild(continueDialog);
+                    playGame.computersTurnOnLoss();
+
+                    if(dialogClass === 'restart'){
+                        gameInitialize.scoreO = 0;
                         gameInitialize.scoreX = 0;
                         document.querySelector('.x-score').textContent = gameInitialize.scoreX;
-                        gameInitialize.scoreO = 0;
                         document.querySelector('.o-score').textContent = gameInitialize.scoreO;
                         body.removeChild(continueDialog);
-                    } else {
-                        return;
+                        playGame.computersTurnOnLoss();
                     }
-                });
-            } else {
-                continueBtn.classList.add('continue-button');
-                continueDialog.classList.add('continue-dialog');
-                winnerHeader.textContent = "Player " + winner + " wins!";
-                continueBtn.textContent = "AGAIN!";
-                body.appendChild(continueDialog);
-                continueDialog.showModal();
-                continueDialog.appendChild(winnerHeader);
-                continueDialog.appendChild(continueBtn).classList.add('continue-button');
-                continueDialog.addEventListener('cancel', (e) => {
-                    e.preventDefault();
-                });
-                continueDialog.addEventListener('click', (e) => {
-                    const target = e.target;
-                    if(target === continueBtn){
-                        continueDialog.close();
-                        playGame.roundReset();
-                        body.removeChild(continueDialog);
-                    } else {
-                        return;
-                    }
-                });
-            }
+
+                } else {
+                    return;
+                }
+            });
         },
 
         roundReset: function() {
